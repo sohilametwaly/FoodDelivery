@@ -85,6 +85,7 @@ const Navbar = ({ setshowlogin }) => {
           <ul className={`absolute bg-white p-3 rounded w-[150px] ${isDropdownVisible ? 'block' : 'hidden'} right-0 z-1`}>
               <li className="flex items-center p-1" ><img src={assets.bag_icon} alt="" className="h-[25px] mr-2"/><p>Orders</p></li>
               <hr className="my-1 border-t border-gray-300"/>
+
               {isAdmin && <><li className="flex items-center pr1" onClick={onClickHandler}><img src={assets.admin_icon} alt="" className="h-[25px] pr-2"/>Admin Panel</li><hr className="my-1 border-t border-gray-300"/></>}
               <li onClick={onSubmitHandler} className="flex items-center p-1"><img src={assets.logout_icon} alt="" className="h-[25px] mr-2"/><p>Log Out</p></li>
           </ul>

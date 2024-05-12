@@ -10,32 +10,32 @@ const Sidebar = () => {
           className="flex items-center gap-2 border-2 border-r-0 border-gray-300 current:border-[#ff6347] current:bg-[#fff0ed] p-2 rounded-l cursor-pointer md:gap-8 lg:gap-128 focus:text-xl"
         >
           <img src={assets.add_icon} alt="" />
-          <p className="hidden sm:block md:block">Add Items</p>
+          <p className=" sm:block md:block">Add Items</p>
         </NavLink>
         <NavLink
           to="/list"
           className="flex items-center gap-2 md:gap-8 lg:gap-128 border-2 border-r-0 border-gray-300  current:border-[#ff6347] current:bg-[#fff0ed]  p-2 rounded-l border-radius-2 cursor-pointer "
         >
           <img src={assets.order_icon} alt="" />
-          <p className="hidden sm:block md:block">List Items</p>
+          <p className=" sm:block md:block">List Items</p>
         </NavLink>
         <NavLink
           to="/orders"
           className="flex items-center gap-2 md:gap-8 lg:gap-128 border-2 border-r-0 border-gray-300  current:border-[#ff6347] current:bg-[#fff0ed]   p-2 rounded-l border-radius-2 cursor-pointer"
         >
           <img src={assets.order_icon} alt="" />
-          <p className=" hidden sm:block md:block">Orders</p>
+          <p className="sm:block md:block">Orders</p>
         </NavLink>
-        <NavLink
+        <NavLink 
           to="/dashboard"
           className="flex items-center gap-2 md:gap-8 lg:gap-128 border-2 border-r-0 border-gray-300  current:border-[#ff6347] current:bg-[#fff0ed]   p-2 rounded-l border-radius-2 cursor-pointer"
         >
           <img
             src={assets.dashboard_icon}
             alt=""
-            className="max-w-[17%] max-h-[17%]"
+            className="w-[30px] h-[30px]"
           />
-          <p className=" hidden sm:block md:block">Dashboard</p>
+          <p className=" sm:block md:block">Dashboard</p>
         </NavLink>
       </div>
     </div>
