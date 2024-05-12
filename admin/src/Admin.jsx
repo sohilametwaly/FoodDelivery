@@ -8,10 +8,10 @@ import Dashbord from "./pages/Dashboard/Dashboard";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const App = () => {
+const Admin = () => {
   return (
     <div className="font-custom ">
-      <Navbar />
+      {/* <Navbar /> */}
       <ToastContainer />
       <hr />
       <div className="flex ">
@@ -27,4 +27,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Admin;

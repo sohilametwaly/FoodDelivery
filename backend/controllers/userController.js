@@ -11,15 +11,13 @@ const loginUser = async (req, res) => {
     if (!user) {
       return res.json({ success: false, message: "user is not exists" });
     }
-    console.log(password);
-    console.log(user.password);
+    
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.json({ success: false, message: "Invalid credentials" });
     }
     const token = createToken(user._id);
-
-    res.json({ success: true, message: "Loged In Successfully", token });
+    res.json({ success: true, message: "Loged In Successfully", token:token,isAdmin:user.is_admin});
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: "Error" });
@@ -56,7 +54,7 @@ const registerUser = async (req, res) => {
     });
     const user = await newUser.save();
     const token = createToken(user._id);
-    res.json({ success: true, token });
+    res.json({ success: true, token:token,isAdmin:user.is_admin });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: "Error" });

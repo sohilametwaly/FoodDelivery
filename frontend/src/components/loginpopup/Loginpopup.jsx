@@ -1,20 +1,23 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { assets } from "../../assets/assets";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { StoreContext } from "../../context/StoreContext";
 
 const Loginpopup = ({ setshowlogin }) => {
   const [currstate, setcurrstate] = useState("Login");
+  const {token,setToken,setIsAdmin}  = useContext(StoreContext)
+  const url = "http://localhost:3000"
   const [data, setData] = useState({
     name: "",
     email: "",
     password: "",
   });
   const onChangeHandler = (event) => {
-    const name = event.targrt.name;
-    const value = event.targrt.value;
+    const name = event.target.name;
+    const value = event.target.value;
     setData((data) => ({ ...data, [name]: value }));
   };
 
@@ -27,6 +30,22 @@ const Loginpopup = ({ setshowlogin }) => {
     terms: Yup.boolean().oneOf([true], "Terms must be accepted"), // For the terms checkbox
   });
 
+
+  const validate = (values) => {
+    const errors = {};
+
+    if (!data.email) {
+      errors.email = "Email is required";
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(data.email)) {
+      errors.email = "Invalid email address";
+    }
+
+    if (!data.password) {
+      errors.password = "Password is required";
+    }
+
+    return errors;
+  };
   const initialValues = {
     name: "",
     email: "",
@@ -34,29 +53,50 @@ const Loginpopup = ({ setshowlogin }) => {
     terms: false,
   };
 
-  const onSubmit = async (values, { setSubmitting }) => {
-    setSubmitting(false);
-    try {
-      const res = await axios.post("http://localhost:3000/api/user/login", {
-        email: values.email,
-        password: values.password,
-      });
-      console.log(res);
+  // const onSubmit = async (values, { setSubmitting }) => {
+  //   setSubmitting(false);
+  //   try {
+  //     const res = await axios.post("http://localhost:3000/api/user/login", {
+  //       email: values.email,
+  //       password: values.password,
+  //     });
+  //     setshowlogin(false);
+  //     toast.success("Successfully logged in");
+  //     localStorage.setItem("token", res.data.token);
+  //     localStorage.setItem("isAdmin",req.body.isAdmin);
+  //   } catch (error) {
+  //     toast.error(error.message);
+  //   }
+  // };
 
-      toast.success("Successfully logged in");
-      localStorage.setItem("token", res.data.token);
-    } catch (error) {
-      toast.error(error.message);
+  const onLogin=async()=>{
+    let newUrl = url;
+    if(currstate == "Login"){
+      newUrl += "/api/user/login"
+    }else{
+      newUrl += "/api/user/register"
     }
-  };
+    const response = await axios.post(newUrl,data)
+    if(response.data.success){
+      setToken(response.data.token)
+      setIsAdmin(response.data.isAdmin)
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("isAdmin",response.data.isAdmin);
+      setshowlogin(false)
+
+    }else{
+      alert(response.data.message)
+    }
+    
+  }
 
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
       <div className="bg-white p-8 rounded-lg shadow-lg">
         <Formik
           initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={onSubmit}
+          onSubmit={onLogin}
+         validate={validate}
         >
           {({ isSubmitting }) => (
             <Form className="space-y-4">
@@ -75,6 +115,8 @@ const Loginpopup = ({ setshowlogin }) => {
                     type="text"
                     name="name"
                     placeholder="Your Name"
+                    onChange={onChangeHandler}
+                    value={data.name}
                     className="border border-gray-300 rounded px-3 py-2 w-full"
                   />
                   <ErrorMessage
@@ -87,6 +129,8 @@ const Loginpopup = ({ setshowlogin }) => {
               <Field
                 type="email"
                 name="email"
+                onChange={onChangeHandler}
+                value={data.email}
                 placeholder="Your E-mail"
                 className="border border-gray-300 rounded px-3 py-2 w-full"
               />
@@ -98,6 +142,8 @@ const Loginpopup = ({ setshowlogin }) => {
               <Field
                 type="password"
                 name="password"
+                onChange={onChangeHandler}
+                value={data.password}
                 placeholder="Password"
                 className="border border-gray-300 rounded px-3 py-2 w-full"
               />

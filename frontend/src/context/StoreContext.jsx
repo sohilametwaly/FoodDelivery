@@ -8,10 +8,11 @@ const StoreContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
   const url = "http://localhost:3000";
   const [token, setToken] = useState("");
+  const [isAdmin,setIsAdmin] = useState("")
   const [Food_list, setFoodList] = useState(food_list);
 
   const addToCart = async (itemID) => {
-    if (cartItems[itemID]) {
+    if (cartItems?.hasOwnProperty(itemID)) {
       setCartItems((prev) => ({
         ...prev,
         [itemID]: prev[itemID] + 1,
@@ -47,7 +48,7 @@ const StoreContextProvider = (props) => {
 
   const getTotalCartAmount = () => {
     let totalamount = 0;
-    if (Object.keys(cartItems).length > 0) {
+    if (cartItems != null) {
       for (let item in cartItems) {
         let itemInfo = food_list.find((product) => product._id === item);
         if (itemInfo) totalamount += itemInfo.price * cartItems[item];
@@ -66,6 +67,7 @@ const StoreContextProvider = (props) => {
       { headers: { token } }
     );
     setCartItems(response.data.cartData);
+    console.log(cartItems);
   };
 
   const clearCart = () => {
@@ -88,6 +90,9 @@ const StoreContextProvider = (props) => {
     food_list,
     cartItems,
     token,
+    isAdmin,
+    setIsAdmin,
+    setToken,
     clearCart,
     setCartItems,
     addToCart,

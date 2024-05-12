@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import {useNavigate} from 'react-router-dom';
 import { StoreContext } from "../../context/StoreContext";
 import axios from "axios";
 import { HashLink as Link } from "react-router-hash-link";
@@ -6,6 +7,7 @@ import { HashLink as Link } from "react-router-hash-link";
 const PlaceOrder = () => {
   const { getTotalCartAmount, food_list, cartItems, url, clearCart } =
     useContext(StoreContext);
+    const navigate = useNavigate()
   const [data, setData] = useState({
     firstName: "",
     lastName: "",
@@ -49,7 +51,7 @@ const PlaceOrder = () => {
     if (response.data.success) {
       //const { session_url } = response.data;
       clearCart();
-
+      navigate('/');
       //window.location.replace(session_url);
     } else {
       console.log(response.data.message);
@@ -179,7 +181,6 @@ const PlaceOrder = () => {
             </div>
           </div>
           <button
-            to="/"
             type="submit"
             className="total button bg-red-600 text-white px-6 py-3 rounded-md cursor-pointer "
           >

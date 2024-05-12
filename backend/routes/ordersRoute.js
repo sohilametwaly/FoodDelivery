@@ -4,7 +4,7 @@ import {
   updateOrder,
   userOrders,
 } from "../controllers/orderController.js";
-import authMiddleware from "../middleware/auth.js";
+import {authMiddleware} from "../middleware/auth.js";
 import express from "express";
 
 const orderRouter = express.Router();

@@ -16,7 +16,7 @@ const FoodItem = ({ id, name, price, description, img }) => {
         />
       </div>
       <div className="flex flex-col gap-1 p-4 relative">
-        {!cartItems[id] ? (
+        {!cartItems?.hasOwnProperty(id)? (
           <img
             src={assets.add_icon_white}
             onClick={() => {

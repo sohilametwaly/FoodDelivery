@@ -1,10 +1,31 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { assets } from "../../assets/assets.js";
 import { HashLink as Link } from "react-router-hash-link";
 import { StoreContext } from "../../context/StoreContext.jsx";
+import {useNavigate} from "react-router-dom"
 
 const Navbar = ({ setshowlogin }) => {
-  const { getTotalCartAmount } = useContext(StoreContext);
+  const { getTotalCartAmount ,token,setToken,setIsAdmin,isAdmin} = useContext(StoreContext);
+  const [isDropdownVisible,setIsDropdownVisible]  = useState(false)
+  const navigate = useNavigate()
+
+  const handleMouseEnter=()=>{
+      setIsDropdownVisible(true)
+  }
+
+  const handleMouseLeave=()=>{
+    setIsDropdownVisible(false)
+  }
+
+  const onClickHandler=()=>{
+    navigate("/admin")
+  }
+
+  const onSubmitHandler = ()=>{
+    setToken("")
+    setIsAdmin("")
+    localStorage.clear()
+  }
   return (
     <div className="flex items-center justify-between pt-2 w-[80%] m-auto ">
       <Link to="/">
@@ -53,13 +74,24 @@ const Navbar = ({ setshowlogin }) => {
             }
           ></div>
         </div>
-
-        <button
+        {!token?<button
           onClick={() => setshowlogin(true)}
           className="text-[#49557e] hover:bg-[#fff4f2] border-2 rounded-xl p-[4px]  font-custom transition-[0.3s] w-[150px]"
         >
           Sign In
-        </button>
+        </button>:(
+          <div className="relative " onMouseEnter={() => handleMouseEnter()} onMouseLeave={() => handleMouseLeave()}>
+          <img src={assets.profile_icon} alt="" className="h-[25px]"/>
+          <ul className={`absolute bg-white p-3 rounded w-[150px] ${isDropdownVisible ? 'block' : 'hidden'} right-0 z-1`}>
+              <li className="flex items-center p-1" ><img src={assets.bag_icon} alt="" className="h-[25px] mr-2"/><p>Orders</p></li>
+              <hr className="my-1 border-t border-gray-300"/>
+              {isAdmin && <><li className="flex items-center pr1" onClick={onClickHandler}><img src={assets.admin_icon} alt="" className="h-[25px] pr-2"/>Admin Panel</li><hr className="my-1 border-t border-gray-300"/></>}
+              <li onClick={onSubmitHandler} className="flex items-center p-1"><img src={assets.logout_icon} alt="" className="h-[25px] mr-2"/><p>Log Out</p></li>
+          </ul>
+      </div>
+         
+        )}
+        
       </div>
     </div>
   );
